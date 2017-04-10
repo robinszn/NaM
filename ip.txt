@@ -1,0 +1,69 @@
+# Nmap 7.31 scan initiated Mon Mar 20 15:21:20 2017 as: nmap -T4 -A -v -oN ip.txt 52.24.155.105
+Nmap scan report for ec2-52-24-155-105.us-west-2.compute.amazonaws.com (52.24.155.105)
+Host is up (0.100s latency).
+Not shown: 993 filtered ports
+PORT      STATE SERVICE       VERSION
+80/tcp    open  http          Microsoft IIS httpd 8.5
+| http-methods: 
+|   Supported Methods: OPTIONS TRACE GET HEAD POST
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: IIS Windows Server
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds  Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+3389/tcp  open  ms-wbt-server Microsoft Terminal Service
+| ssl-cert: Subject: commonName=WIN-508BNS7MS2H
+| Issuer: commonName=WIN-508BNS7MS2H
+| Public Key type: rsa
+| Public Key bits: 2048
+| Signature Algorithm: sha1WithRSAEncryption
+| Not valid before: 2017-01-31T08:47:49
+| Not valid after:  2017-08-02T08:47:49
+| MD5:   0fef 6536 514a 1196 d3b7 2a96 9123 45b3
+|_SHA-1: 46a9 12a3 246f abfc c130 01e6 3862 cbbe f907 079f
+|_ssl-date: 2017-03-20T19:22:40+00:00; -6s from scanner time.
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running: Microsoft Windows 2012
+OS CPE: cpe:/o:microsoft:windows_server_2012:r2
+OS details: Microsoft Windows Server 2012 or Windows Server 2012 R2
+Uptime guess: 42.057 days (since Mon Feb 06 13:02:01 2017)
+Network Distance: 24 hops
+TCP Sequence Prediction: Difficulty=258 (Good luck!)
+IP ID Sequence Generation: Incremental
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: -6s, deviation: 0s, median: -6s
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smbv2-enabled: Server supports SMBv2 protocol
+
+TRACEROUTE (using port 3389/tcp)
+HOP RTT      ADDRESS
+1   1.00 ms  192.168.1.1
+2   10.00 ms 142.254.147.137
+3   ...
+4   19.00 ms be24.lsvmkyzo01r.midwest.rr.com (65.29.31.50)
+5   27.00 ms be24.clmkohpe01r.midwest.rr.com (65.189.140.162)
+6   38.00 ms bu-ether15.chctilwc00w-bcr00.tbone.rr.com (66.109.6.68)
+7   86.00 ms bu-ether11.chcgildt87w-bcr00.tbone.rr.com (66.109.6.20)
+8   83.00 ms bu-ether11.snvacaid17w-bcr00.tbone.rr.com (66.109.6.14)
+9   ...
+10  81.00 ms 24.27.236.55
+11  ... 12
+13  99.00 ms 205.251.232.116
+14  ... 23
+24  99.00 ms ec2-52-24-155-105.us-west-2.compute.amazonaws.com (52.24.155.105)
+
+Post-scan script results:
+| clock-skew: 
+|_  -6s: Majority of systems scanned
+Read data files from: C:\Program Files (x86)\Nmap
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Mar 20 15:23:25 2017 -- 1 IP address (1 host up) scanned in 126.11 seconds

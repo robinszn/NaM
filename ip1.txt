@@ -1,0 +1,60 @@
+# Nmap 7.31 scan initiated Mon Mar 20 07:04:02 2017 as: nmap -A -oN ip.txt 52.24.155.105
+Nmap scan report for ec2-52-24-155-105.us-west-2.compute.amazonaws.com (52.24.155.105)
+Host is up (0.100s latency).
+Not shown: 993 filtered ports
+PORT      STATE SERVICE       VERSION
+80/tcp    open  http          Microsoft IIS httpd 8.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: IIS Windows Server
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds  Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+3389/tcp  open  ms-wbt-server Microsoft Terminal Service
+| ssl-cert: Subject: commonName=WIN-508BNS7MS2H
+| Not valid before: 2017-01-31T08:47:49
+|_Not valid after:  2017-08-02T08:47:49
+|_ssl-date: 2017-03-20T11:05:23+00:00; -5s from scanner time.
+49154/tcp open  msrpc         Microsoft Windows RPC
+49155/tcp open  msrpc         Microsoft Windows RPC
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running: Microsoft Windows 2012
+OS CPE: cpe:/o:microsoft:windows_server_2012:r2
+OS details: Microsoft Windows Server 2012 or Windows Server 2012 R2
+Network Distance: 24 hops
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: -5s, deviation: 0s, median: -5s
+| smb-security-mode: 
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smbv2-enabled: Server supports SMBv2 protocol
+
+TRACEROUTE (using port 135/tcp)
+HOP RTT       ADDRESS
+1   0.00 ms   192.168.1.1
+2   9.00 ms   142.254.147.137
+3   ...
+4   13.00 ms  be24.lsvmkyzo01r.midwest.rr.com (65.29.31.50)
+5   22.00 ms  be24.clmkohpe01r.midwest.rr.com (65.189.140.162)
+6   34.00 ms  bu-ether15.chctilwc00w-bcr00.tbone.rr.com (66.109.6.68)
+7   84.00 ms  bu-ether11.chcgildt87w-bcr00.tbone.rr.com (66.109.6.20)
+8   84.00 ms  bu-ether11.snvacaid17w-bcr00.tbone.rr.com (66.109.6.14)
+9   80.00 ms  0.ae0.pr0.sjc20.tbone.rr.com (66.109.6.139)
+10  81.00 ms  24.27.236.55
+11  ... 12
+13  101.00 ms 205.251.232.116
+14  ... 17
+18  100.00 ms 205.251.232.63
+19  ... 23
+24  99.00 ms  ec2-52-24-155-105.us-west-2.compute.amazonaws.com (52.24.155.105)
+
+Post-scan script results:
+| clock-skew: 
+|_  -5s: Majority of systems scanned
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Mar 20 07:06:08 2017 -- 1 IP address (1 host up) scanned in 126.51 seconds
