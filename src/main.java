@@ -3,8 +3,12 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.graphstream.graph.*;
@@ -85,6 +89,7 @@ public class main extends javax.swing.JFrame {
         txtAreaReports = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        btnBrowseReports = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuOpen = new javax.swing.JMenuItem();
@@ -119,7 +124,7 @@ public class main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Network Asset Manager BETA");
-        setPreferredSize(new java.awt.Dimension(847, 800));
+        setPreferredSize(new java.awt.Dimension(850, 850));
 
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -268,7 +273,7 @@ public class main extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(lblScanning)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 201, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,7 +307,7 @@ public class main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblEstTime))
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(lblScanning)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,7 +386,7 @@ public class main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnGetPorts)
                 .addGap(18, 18, 18))
@@ -402,34 +407,46 @@ public class main extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Information, Traceroute, etc. (Best used after running a \"Heavy Scan\")");
 
+        btnBrowseReports.setText("Browse");
+        btnBrowseReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBrowseReportsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane3))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE))))
+                        .addComponent(jLabel11)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 810, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBrowseReports)
+                .addGap(45, 45, 45))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
+                .addContainerGap(43, Short.MAX_VALUE)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBrowseReports)
+                .addGap(20, 20, 20))
         );
 
         jTabbedPane1.addTab("Vulnerability Scanner", jPanel5);
@@ -485,11 +502,29 @@ public class main extends javax.swing.JFrame {
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("JTree");
 
-        setSize(new java.awt.Dimension(855, 763));
+        setSize(new java.awt.Dimension(855, 788));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSaveActionPerformed
+       File file = new File("Output.txt");
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(file, true);
+        } catch (IOException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            txtAreaReports.write(fw);
+        } catch (IOException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Save a File");
+        fc.setSelectedFile(file);
+        fc.showSaveDialog(null);
+        
         
     }//GEN-LAST:event_jMenuSaveActionPerformed
 
@@ -499,7 +534,21 @@ public class main extends javax.swing.JFrame {
         
         File f = chooser.getSelectedFile();
         String fileName = f.getAbsolutePath();
-        txtReports.setText(fileName);
+        //txtAreaReports.setText(fileName);
+        
+         try
+                {
+                    FileReader reader = new FileReader(fileName);
+                    BufferedReader br = new BufferedReader(reader);
+                    txtAreaReports.read( br, null );
+                    br.close();
+                    txtAreaReports.requestFocus();
+                }
+                catch(Exception e2) { System.out.println(e2); }
+            {
+            }
+        
+        
         
     }//GEN-LAST:event_jMenuOpenActionPerformed
 
@@ -675,6 +724,27 @@ public class main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_txtIPAddressActionPerformed
 
+    private void btnBrowseReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseReportsActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        
+        File f = chooser.getSelectedFile();
+        String fileName = f.getAbsolutePath();
+        //txtAreaReports.setText(fileName);
+        
+         try
+                {
+                    FileReader reader = new FileReader(fileName);
+                    BufferedReader br = new BufferedReader(reader);
+                    txtAreaReports.read( br, null );
+                    br.close();
+                    txtAreaReports.requestFocus();
+                }
+                catch(Exception e2) { System.out.println(e2); }
+            {
+            }
+    }//GEN-LAST:event_btnBrowseReportsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -713,6 +783,7 @@ public class main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddIP;
     private javax.swing.JButton btnBrowse;
+    private javax.swing.JButton btnBrowseReports;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnGenerateGraph;
     private javax.swing.JButton btnGetNetworkDevices;

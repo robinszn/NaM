@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE nmaprun>
 <?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
-<!-- Nmap 7.31 scan initiated Mon Apr 10 22:41:12 2017 as: nmap -sn -oN outputfile.txt -oX outputfile.xml 52.24.155.105 -->
-<nmaprun scanner="nmap" args="nmap -sn -oN outputfile.txt -oX outputfile.xml 52.24.155.105" start="1491878472" startstr="Mon Apr 10 22:41:12 2017" version="7.31" xmloutputversion="1.04">
+<!-- Nmap 7.31 scan initiated Tue Apr 11 00:00:22 2017 as: nmap -sn -oN outputfile.txt -oX outputfile.xml 52.24.155.105 -->
+<nmaprun scanner="nmap" args="nmap -sn -oN outputfile.txt -oX outputfile.xml 52.24.155.105" start="1491883222" startstr="Tue Apr 11 00:00:22 2017" version="7.31" xmloutputversion="1.04">
 <verbose level="0"/>
 <debugging level="0"/>
 <host><status state="up" reason="echo-reply" reason_ttl="107"/>
@@ -12,6 +12,6 @@
 </hostnames>
 <times srtt="100000" rttvar="100000" to="500000"/>
 </host>
-<runstats><finished time="1491878475" timestr="Mon Apr 10 22:41:15 2017" elapsed="2.61" summary="Nmap done at Mon Apr 10 22:41:15 2017; 1 IP address (1 host up) scanned in 2.61 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+<runstats><finished time="1491883225" timestr="Tue Apr 11 00:00:25 2017" elapsed="2.67" summary="Nmap done at Tue Apr 11 00:00:25 2017; 1 IP address (1 host up) scanned in 2.67 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
 </runstats>
 </nmaprun>
