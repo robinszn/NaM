@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.31 scan initiated Mon Apr 10 22:12:53 2017 as: nmap -sn -oN outputfile.txt -oX ip.xml 52.24.155.105 -->
+<nmaprun scanner="nmap" args="nmap -sn -oN outputfile.txt -oX ip.xml 52.24.155.105" start="1491876773" startstr="Mon Apr 10 22:12:53 2017" version="7.31" xmloutputversion="1.04">
+<verbose level="0"/>
+<debugging level="0"/>
+<host><status state="up" reason="echo-reply" reason_ttl="107"/>
+<address addr="52.24.155.105" addrtype="ipv4"/>
+<hostnames>
+<hostname name="ec2-52-24-155-105.us-west-2.compute.amazonaws.com" type="PTR"/>
+</hostnames>
+<times srtt="101000" rttvar="101000" to="505000"/>
+</host>
+<runstats><finished time="1491876775" timestr="Mon Apr 10 22:12:55 2017" elapsed="2.83" summary="Nmap done at Mon Apr 10 22:12:55 2017; 1 IP address (1 host up) scanned in 2.83 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

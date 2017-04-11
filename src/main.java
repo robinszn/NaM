@@ -1,19 +1,14 @@
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
-import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
 
@@ -31,6 +26,9 @@ public class main extends javax.swing.JFrame {
  
     ArrayList<String> list = new ArrayList<String>();
     MultiGraph graph = new MultiGraph("Network Map");
+    String Commands = "";
+    
+    
     /**
      * Creates new form main
      */
@@ -57,27 +55,36 @@ public class main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtReports = new javax.swing.JTextArea();
         btnGetNetworkDevices = new javax.swing.JButton();
+        btnGenerateGraph = new javax.swing.JButton();
         txtIPAddress = new javax.swing.JTextField();
         btnClear = new javax.swing.JButton();
         cmbScans = new javax.swing.JComboBox();
         btnBrowse = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAddIP = new javax.swing.JButton();
         cmbOutputType = new javax.swing.JComboBox();
         lblScanning = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtFromFile = new javax.swing.JTextField();
+        txtCommands = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        lblScanInfo = new javax.swing.JLabel();
+        lblEstTime = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        btnGenerateMap = new javax.swing.JButton();
+        btnGetPorts = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         lblAddress = new javax.swing.JLabel();
-        GraphDisplay = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtAreaPorts = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAreaReports = new javax.swing.JTextArea();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuOpen = new javax.swing.JMenuItem();
@@ -112,7 +119,7 @@ public class main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Network Asset Manager BETA");
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(847, 800));
 
         jTabbedPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -125,6 +132,7 @@ public class main extends javax.swing.JFrame {
         lblScanType.setText("Enter IP Address:");
         lblScanType.setToolTipText("");
 
+        txtReports.setEditable(false);
         txtReports.setColumns(20);
         txtReports.setRows(5);
         txtReports.setName("txtReports"); // NOI18N
@@ -138,7 +146,20 @@ public class main extends javax.swing.JFrame {
             }
         });
 
+        btnGenerateGraph.setText("Generate Network Graph");
+        btnGenerateGraph.setEnabled(false);
+        btnGenerateGraph.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerateGraphActionPerformed(evt);
+            }
+        });
+
         txtIPAddress.setName("txtAddress"); // NOI18N
+        txtIPAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIPAddressActionPerformed(evt);
+            }
+        });
 
         btnClear.setText("Clear Report");
         btnClear.setName(""); // NOI18N
@@ -148,7 +169,8 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        cmbScans.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Simple Scan", "OS Detection Scan", "Heavy Scan", "Scan from File" }));
+        cmbScans.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Simple Scan", "OS Detection Scan", "Heavy Scan", "Scan from File", "None" }));
+        cmbScans.setSelectedIndex(4);
         cmbScans.setToolTipText("");
         cmbScans.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,10 +186,10 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setLabel("Add IP");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAddIP.setLabel("Add IP");
+        btnAddIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAddIPActionPerformed(evt);
             }
         });
 
@@ -183,64 +205,70 @@ public class main extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/512_pixels/256_pixels/5_White_logo_on_black_256.jpg"))); // NOI18N
 
-        txtFromFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFromFileActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Commands: ");
+        jLabel4.setText("Commands:");
 
         jLabel5.setText("Output:");
 
         jLabel6.setText("Scan Type:");
+
+        jLabel12.setText("Scan Info:");
+
+        lblScanInfo.setText("No Scan Selected");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(83, 83, 83)
                 .addComponent(btnGetNetworkDevices, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
+                .addGap(99, 99, 99)
+                .addComponent(btnGenerateGraph)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(226, 226, 226))
+                .addGap(93, 93, 93))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(lblScanType))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtIPAddress)
-                                    .addComponent(txtFromFile, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3))
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
+                                .addGap(7, 7, 7)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(lblScanType)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel12))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(cmbScans, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel5))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnBrowse))
-                                    .addComponent(cmbOutputType, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(cmbScans, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnBrowse))
+                                            .addComponent(cmbOutputType, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblScanInfo)
+                                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(txtIPAddress)
+                                                    .addComponent(txtCommands, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnAddIP))
+                                            .addComponent(lblEstTime))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(46, 46, 46))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(lblScanning)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 19, Short.MAX_VALUE))
+                .addGap(0, 201, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,9 +279,9 @@ public class main extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblScanType)
                             .addComponent(txtIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
+                            .addComponent(btnAddIP)
+                            .addComponent(lblScanType, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbScans, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,51 +293,55 @@ public class main extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
+                            .addComponent(txtCommands, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(lblScanInfo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEstTime))
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(lblScanning)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGetNetworkDevices)
-                    .addComponent(btnClear))
+                    .addComponent(btnClear)
+                    .addComponent(btnGenerateGraph))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Enter IP Address", jPanel3);
 
-        btnGenerateMap.setText("Generate Network Map");
-        btnGenerateMap.setName("btnMap"); // NOI18N
-        btnGenerateMap.addActionListener(new java.awt.event.ActionListener() {
+        btnGetPorts.setText("Get Open Ports");
+        btnGetPorts.setName("btnMap"); // NOI18N
+        btnGetPorts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerateMapActionPerformed(evt);
+                btnGetPortsActionPerformed(evt);
             }
         });
 
-        jLabel3.setText("Network Map for: ");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Open ports are the doorways to your secure perimeter. Using the NMap API, NaM can be used as a network mapping utility ");
         jLabel3.setAutoscrolls(true);
         jLabel3.setName(""); // NOI18N
 
-        javax.swing.GroupLayout GraphDisplayLayout = new javax.swing.GroupLayout(GraphDisplay);
-        GraphDisplay.setLayout(GraphDisplayLayout);
-        GraphDisplayLayout.setHorizontalGroup(
-            GraphDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
-        );
-        GraphDisplayLayout.setVerticalGroup(
-            GraphDisplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 539, Short.MAX_VALUE)
-        );
+        txtAreaPorts.setEditable(false);
+        txtAreaPorts.setColumns(20);
+        txtAreaPorts.setRows(5);
+        jScrollPane2.setViewportView(txtAreaPorts);
 
-        jButton2.setText("Popout Graph");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("that can be used to identify open \"doors\". By click the button below, open ports for the requested IP can be shown to ");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("identifiy any open ports on a particular network. (Est. time 10 seconds per IP)");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel9.setText("NaM Open Port Finder");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -318,58 +350,85 @@ public class main extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
-                        .addComponent(btnGenerateMap, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(68, 68, 68)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 971, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblAddress))
-                            .addComponent(GraphDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(41, Short.MAX_VALUE))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(320, 320, 320)
+                        .addComponent(btnGetPorts, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(16, 16, 16)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(lblAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(GraphDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerateMap)
-                    .addComponent(jButton2))
-                .addGap(13, 13, 13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGetPorts)
+                .addGap(18, 18, 18))
         );
 
         lblAddress.getAccessibleContext().setAccessibleName("lblAddress");
 
-        jTabbedPane1.addTab("System Information", jPanel4);
+        jTabbedPane1.addTab("Request Open Ports", jPanel4);
 
+        txtAreaReports.setEditable(false);
         txtAreaReports.setColumns(20);
         txtAreaReports.setRows(5);
         jScrollPane3.setViewportView(txtAreaReports);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Lists all possible other information from the most recent scan including Operating System, Open Ports, Host Authentification");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("Information, Traceroute, etc. (Best used after running a \"Heavy Scan\")");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 822, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 987, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 596, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -417,9 +476,7 @@ public class main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 847, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -428,51 +485,9 @@ public class main extends javax.swing.JFrame {
 
         jTabbedPane1.getAccessibleContext().setAccessibleName("JTree");
 
-        setSize(new java.awt.Dimension(867, 763));
+        setSize(new java.awt.Dimension(855, 763));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnGenerateMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateMapActionPerformed
-            graph.clear();
-           
-            Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD); 
-            viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-            
-            for(String address : list)
-            {
-            graph.addNode(address);
-            }
-            for (int i = 0; i < graph.getNodeCount(); i++) {
-               Node node1 = graph.getNode(i);
-                if (i > 0) {
-
-                Node node2 = graph.getNode(i-1);
-                Node firstNode = graph.getNode(0);
-                Node connectNode = graph.getNode(i/2);
-                
-                graph.addEdge((i+"a"), node1, node2);
-                graph.addEdge((i+"b"), node1, firstNode);
-                graph.addEdge((i+"c"), node1, connectNode);
-               }     
-//              graph.addEdge(i + "-" + (i - 1), i + "", (i - 1) + "");
-//		graph.addEdge(i + "--" + (i / 2), i + "", (i / 2) + "");
-                //JOptionPane.showMessageDialog(null, node2);
-                
-}
-                      
-           
-          
-     for (Node node : graph) {
-        node.addAttribute("ui.label", node.getId());
-    }
-             View view = viewer.addDefaultView(rootPaneCheckingEnabled);   // false indicates "no JFrame".
-             viewer.enableAutoLayout();
-             //view.getCamera().setViewCenter(2, 3 ,4);
-             //view.getCamera().setViewPercent(0.7);
-             //view.getCamera().resetView();
-             GraphDisplay.add((Component)view); 
-   
-    }//GEN-LAST:event_btnGenerateMapActionPerformed
 
     private void jMenuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSaveActionPerformed
         
@@ -488,7 +503,7 @@ public class main extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuOpenActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnGenerateGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateGraphActionPerformed
           graph.clear();
             
            for(String address : list)
@@ -512,13 +527,13 @@ public class main extends javax.swing.JFrame {
         node.addAttribute("ui.label", node.getId());
     }
                 graph.display().setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnGenerateGraphActionPerformed
 
     private void cmbOutputTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOutputTypeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbOutputTypeActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnAddIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddIPActionPerformed
 
         String text = txtIPAddress.getText();
         list.add(text);
@@ -529,7 +544,7 @@ public class main extends javax.swing.JFrame {
         txtIPAddress.setText("");
         
 
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnAddIPActionPerformed
 
     private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
         JFileChooser chooser = new JFileChooser();
@@ -547,32 +562,46 @@ public class main extends javax.swing.JFrame {
             lblScanType.setText("Enter IP Address: ");
             cmbOutputType.setEnabled(true);
             btnBrowse.setEnabled(false);
+            lblScanInfo.setText("Standard Scan that will show whether the host is online.");
+            lblEstTime.setText("Est. Time 2 sec per IP.");
         }
         if(cmbScans.getSelectedIndex() == 1)
         {
             lblScanType.setText("Enter IP Address: ");
             cmbOutputType.setEnabled(true);
             btnBrowse.setEnabled(false);
+            lblScanInfo.setText("Detects the OS of the host.");
+            lblEstTime.setText("Est. Time 12 seconds per IP.");
         }
         if(cmbScans.getSelectedIndex() == 2)
         {
             lblScanType.setText("Enter IP Address: ");
             cmbOutputType.setEnabled(true);
             btnBrowse.setEnabled(false);
+            lblScanInfo.setText("Detects all possible info(OS, Traceroute, Host Info, Open Ports, etc).");
+            lblEstTime.setText("Est. Time 2 mins per IP.(Recommended 1 at a time).");
         }
-        else if(cmbScans.getSelectedIndex() == 3)
+        if(cmbScans.getSelectedIndex() == 3)
         {
             lblScanType.setText("Enter File Name: ");
             cmbOutputType.setEnabled(false);
-            btnBrowse.setEnabled(true);
-            
+            btnBrowse.setEnabled(true); 
+            lblScanInfo.setText("Scans IP's from a txt file with a basic scan. ");
+            lblEstTime.setText("Est. Time 2 seconds per IP.");
         }
+        if(cmbScans.getSelectedIndex() == 4)
+        {
+           lblScanInfo.setText("No Scan Selected.");
+           lblEstTime.setText("");
+        }
+        
 
     }//GEN-LAST:event_cmbScansActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtReports.setText((""));
         txtIPAddress.setText("");
+        txtAreaReports.setText(" ");
         list.clear();
         graph.clear();
         btnBrowse.setEnabled(false);
@@ -580,38 +609,48 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnGetNetworkDevicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetNetworkDevicesActionPerformed
-        txtReports.append("Initiating Scan..." + "\n");
+        
         lblScanning.setText("Scan Complete!");
         
-
+        if(cmbScans.getSelectedIndex() == 4)
+        {
+            Commands = ("nmap " + txtCommands.getText() + " ");
+            txtReports.append("Please enter an IP." + "\n");
+            txtReports.append("Please select scan type or Enter commands" + "\n"); 
+        }
+        else
+        {
+        
         String IPAddress = txtIPAddress.getText();
         lblAddress.setText(IPAddress);
         ArrayList Results = getIPAddressList();
+        btnGenerateGraph.setEnabled(true);
         txtReports.append(Results.toString());
         graph.clear();
         try
         {
-            if(cmbScans.getSelectedIndex() == 0)
-        {
-            FileReader reader = new FileReader("ip.txt");
-            BufferedReader br = new BufferedReader(reader);
-            txtAreaReports.read(br, null);
-            br.close();
-            txtAreaReports.requestFocus();
-        }
-            else if(cmbScans.getSelectedIndex() == 2)
+            if(cmbScans.getSelectedIndex() == 0 || cmbScans.getSelectedIndex() == 1 || cmbScans.getSelectedIndex() == 2 || cmbScans.getSelectedIndex() == 3)
             {
-//                Scanner s = new Scanner(new File(txtIPAddress.toString()));
-//                while (s.hasNextLine()){
-//                    list.add(s.nextLine());
-//                                    }
-//                s.close();
-                
-                FileReader reader = new FileReader("ip1.txt");
-            BufferedReader br = new BufferedReader(reader);
-            txtAreaReports.read(br, null);
-            br.close();
-            txtAreaReports.requestFocus();
+                if(cmbOutputType.getSelectedIndex() == 0)
+                {
+                FileReader reader = new FileReader("outputfile.txt");
+                BufferedReader br = new BufferedReader(reader);
+                txtAreaReports.read(br, null);
+                br.close();
+                txtAreaReports.requestFocus();
+                }
+                else if(cmbOutputType.getSelectedIndex() == 1)
+                {
+                FileReader reader = new FileReader("outputfile.xml");
+                BufferedReader br = new BufferedReader(reader);
+                txtAreaReports.read(br, null);
+                br.close();
+                txtAreaReports.requestFocus();
+                }
+            }
+            else if(cmbScans.getSelectedIndex() == 4)
+            {
+            txtAreaReports.setText(" ");
             }
             
         }
@@ -619,53 +658,22 @@ public class main extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(null, e);
         }
-
-//           //Graph Details
-//            Viewer viewer = new Viewer(graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD); 
-//            
-//            View view = viewer.addDefaultView(false);
-//            
-//
-//            for(String address : list)
-//            {
-//            graph.addNode(address);
-//            }
-//            for (int i = 0; i < graph.getNodeCount(); i++) {
-//               Node node1 = graph.getNode(i);
-//                if (i > 0) {
-//
-//                Node node2 = graph.getNode(i-1);
-//                Node firstNode = graph.getNode(0);
-//                Node connectNode = graph.getNode(i/2);
-//                
-//                graph.addEdge((i+"a"), node1, node2);
-//                graph.addEdge((i+"b"), node1, firstNode);
-//                graph.addEdge((i+"c"), node1, connectNode);
-//               }     
-////              graph.addEdge(i + "-" + (i - 1), i + "", (i - 1) + "");
-////		graph.addEdge(i + "--" + (i / 2), i + "", (i / 2) + "");
-//                //JOptionPane.showMessageDialog(null, node2);
-//                
-//}
-//                      
-//            //View view = viewer.addDefaultView(false);   // false indicates "no JFrame".
-//          
-//     for (Node node : graph) {
-//        node.addAttribute("ui.label", node.getId());
-//    }       
-//             view.getCamera().setViewPercent(2.5);
-//             viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
-//
-//             GraphDisplay.add((Component) view);
-//             
-             //list.clear();
-        
-        
+        }
     }//GEN-LAST:event_btnGetNetworkDevicesActionPerformed
 
-    private void txtFromFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFromFileActionPerformed
-    
-    }//GEN-LAST:event_txtFromFileActionPerformed
+    private void btnGetPortsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetPortsActionPerformed
+    ArrayList Ports = getPortList();
+    txtAreaPorts.append(Ports.toString());
+
+    }//GEN-LAST:event_btnGetPortsActionPerformed
+
+    private void txtIPAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIPAddressActionPerformed
+//       if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+//       {
+//           
+//       }
+        
+    }//GEN-LAST:event_txtIPAddressActionPerformed
 
     /**
      * @param args the command line arguments
@@ -703,21 +711,26 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel GraphDisplay;
+    private javax.swing.JButton btnAddIP;
     private javax.swing.JButton btnBrowse;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnGenerateMap;
+    private javax.swing.JButton btnGenerateGraph;
     private javax.swing.JButton btnGetNetworkDevices;
+    private javax.swing.JButton btnGetPorts;
     private javax.swing.JComboBox cmbOutputType;
     private javax.swing.JComboBox cmbScans;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -733,74 +746,63 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JLabel lblAddress;
+    private javax.swing.JLabel lblEstTime;
+    private javax.swing.JLabel lblScanInfo;
     private javax.swing.JLabel lblScanType;
     private javax.swing.JLabel lblScanning;
+    private javax.swing.JTextArea txtAreaPorts;
     private javax.swing.JTextArea txtAreaReports;
-    private javax.swing.JTextField txtFromFile;
+    private javax.swing.JTextField txtCommands;
     private javax.swing.JTextField txtIPAddress;
     private javax.swing.JTextArea txtReports;
     // End of variables declaration//GEN-END:variables
 
  public ArrayList<String> getIPAddressList(){
     String IPAddress = txtIPAddress.getText();
-    String Commands = "";
+    Commands = "";
     ArrayList<String> addresses = new ArrayList<String>();
-    
-     
+
     for(String address : list)
     {
     try {
-        if(jButton3.action(null, this))
+        if(btnAddIP.action(null, this))
         { 
+        }
+        if(cmbScans.getSelectedIndex() == 4)
+        {
+            Commands = ("nmap " + txtCommands.getText() + " ");
+            
         }
         if(cmbScans.getSelectedIndex() == 0)
         {
             
-            if(cmbOutputType.getSelectedIndex() == 0)
-           {
-            Commands = "nmap -sn -oN ip.txt ";  
-           }
-            else 
-            {
-              Commands = "nmap -sn -oX outputfile.xml ";   
-            }
+            Commands = "nmap -sn -oN outputfile.txt -oX outputfile.xml ";  
+           
         }
         if(cmbScans.getSelectedIndex() == 1)
-        {
+        {   
             
-            if(cmbOutputType.getSelectedIndex() == 0)
-           {
-            Commands = "nmap -A -oN ip.txt ";
-           }
-           else 
-           {
-              Commands = "nmap -A -oX outputfile.xml ";  
-           }
+            Commands = "nmap -O -oN outputfile.txt -oX outputfile.xml ";
+           
         }
         if(cmbScans.getSelectedIndex() == 2)
         {
-           if(cmbOutputType.getSelectedIndex() == 0)
-           {
-         Commands = "nmap -T4 -A -v -oN ip.txt ";
-           }
-           else 
-           {
-         Commands = "nmap -T4 -A -v -oX outputfile.txt ";
-           }
+          
+         Commands = "nmap -T4 -A -v -oN outputfile.txt -oX outputfile.xml ";
+           
         }
-        if(cmbScans.getSelectedIndex() == 3)
+        else if(cmbScans.getSelectedIndex() == 3)
         {
          list.add(IPAddress);
          Commands = "nmap -iL ";
         }
-        else
-        {
-            Commands = txtFromFile.getText();
-        }  
+        
+        
         Runtime rt = Runtime.getRuntime();
         Process pr = rt.exec(Commands + address);
         BufferedReader input = new BufferedReader(
@@ -815,7 +817,7 @@ public class main extends javax.swing.JFrame {
                 String ip_address = elements[end];
                 String line2 = input.readLine();
                 if (line2.contains("Host is up")){
-                    addresses.add(ip_address + " (Host is up!)" + "\n");
+                    addresses.add(ip_address);
                 }
             }
         }
@@ -831,7 +833,44 @@ public class main extends javax.swing.JFrame {
     }
     return addresses;
 }
+ public ArrayList<String> getPortList(){
+        ArrayList<String> ports = new ArrayList<String>();
+        Commands = "nmap -sS ";
+    
+     
+    for(String address : list)
+    {
+    try {
+    
+        Runtime rt = Runtime.getRuntime();
+        Process pr = rt.exec(Commands + address);
+        //Process pr = rt.exec(Commands + address);
+        BufferedReader input = new BufferedReader(
+        new InputStreamReader(pr.getInputStream()));
+        String line = null;
+        while((line=input.readLine()) != null) {
+            System.out.println(line);
+            txtAreaPorts.append(line + "\n");
+            if (line.contains("Nmap scan report for")){
+                String[] elements = line.split(" ");
+                int end = elements.length-1;
+                String ip_address = elements[end];
+                String line2 = input.readLine();   
+            }
+        }
+
+        int exitVal = pr.waitFor();
+        txtAreaPorts.append("Exited with error code "+exitVal);
+        System.out.println("Exited with error code "+exitVal);
+    }
+    catch(Exception e){
+        e.printStackTrace();
+        System.exit(0);
+    }
+    }
+    return ports;
  
+ }
  
 }
 
